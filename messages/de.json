@@ -1,0 +1,27 @@
+{
+  "Meta": { "title": "suppIT.me — IT-Service und Support", "description": "Computerreparatur, IT-Support, Hardware und Webseiten." },
+  "Nav": { "services": "Leistungen", "about": "Über uns", "repair": "Reparatur melden", "articles": "Wissensdatenbank", "partners": "Partner", "promotions": "Aktionen", "contact": "Kontakt", "login": "Anmelden", "logout": "Abmelden", "admin": "Admin-Bereich", "panel": "Meine Aufträge" },
+  "Theme": { "toggle": "Design wechseln", "light": "Hell", "dark": "Dunkel", "system": "System" },
+  "Language": { "label": "Sprache" },
+  "Home": {
+    "heroTitle": "IT-Support, der einfach funktioniert",
+    "heroText": "Service für Computer und Laptops, Hardware auf Bestellung und Webseiten. Verfolgen Sie den Status Ihres Auftrags online und erhalten Sie Benachrichtigungen per E-Mail oder WhatsApp.",
+    "ctaRepair": "Reparatur melden",
+    "ctaContact": "Kontakt aufnehmen",
+    "featuresTitle": "Wobei wir helfen",
+    "f1Title": "Service und Reparatur", "f1Text": "Diagnose, Reparatur und Aufrüstung von Computern, Laptops und Peripherie.",
+    "f2Title": "Hardware auf Bestellung", "f2Text": "Auswahl und Beschaffung von Hardware und Ersatzteilen nach Ihren Anforderungen.",
+    "f3Title": "Webseiten", "f3Text": "Gestaltung und Betreuung von Webseiten für Unternehmen.",
+    "comingSoon": "Seite im Aufbau — das vollständige Angebot folgt in Kürze."
+  },
+  "Footer": { "rights": "Alle Rechte vorbehalten.", "contact": "Kontakt" },
+  "Login": { "title": "Anmeldung", "subtitle": "Melden Sie sich bei suppIT.me an", "email": "E-Mail", "password": "Passwort", "submit": "Anmelden", "error": "Ungültige E-Mail oder ungültiges Passwort." },
+  "Admin": {
+    "title": "Admin-Bereich", "welcome": "Willkommen, {name}",
+    "dashboard": "Übersicht", "clients": "Kunden", "orders": "Aufträge", "calendar": "Kalender", "inventory": "Lager", "partOrders": "Teilebestellungen", "promotions": "Aktionen", "articles": "Artikel", "settings": "Einstellungen",
+    "statOpenOrders": "Offene Aufträge", "statClients": "Kunden", "statReady": "Abholbereit",
+    "soon": "Dieses Modul folgt in einer späteren Phase."
+  },
+  "Panel": { "title": "Meine Aufträge", "welcome": "Willkommen, {name}", "empty": "Sie haben noch keine Aufträge." },
+  "Roles": { "ADMIN": "Administrator", "EMPLOYEE": "Mitarbeiter", "CLIENT": "Kunde" }
+}

@@ -1,0 +1,5 @@
+# Caddy automatycznie pobiera certyfikat HTTPS (Let's Encrypt) dla domeny
+{$DOMAIN}, www.{$DOMAIN} {
+	encode zstd gzip
+	reverse_proxy app:3000
+}

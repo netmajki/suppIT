@@ -1,0 +1,27 @@
+{
+  "Meta": { "title": "suppIT.me — IT service and support", "description": "Computer repair, IT support, hardware and websites." },
+  "Nav": { "services": "Services", "about": "About", "repair": "Request repair", "articles": "Knowledge base", "partners": "Partners", "promotions": "Promotions", "contact": "Contact", "login": "Log in", "logout": "Log out", "admin": "Admin panel", "panel": "My orders" },
+  "Theme": { "toggle": "Toggle theme", "light": "Light", "dark": "Dark", "system": "System" },
+  "Language": { "label": "Language" },
+  "Home": {
+    "heroTitle": "IT support that just works",
+    "heroText": "Computer and laptop service, hardware on order and websites. Track your order status online and get notified by e-mail or WhatsApp.",
+    "ctaRepair": "Request repair",
+    "ctaContact": "Get in touch",
+    "featuresTitle": "How we help",
+    "f1Title": "Service and repair", "f1Text": "Diagnostics, repair and upgrades of computers, laptops and peripherals.",
+    "f2Title": "Hardware on order", "f2Text": "Selection and purchase of hardware and parts tailored to your needs.",
+    "f3Title": "Websites", "f3Text": "Design and maintenance of business websites.",
+    "comingSoon": "Site under construction — full offer coming soon."
+  },
+  "Footer": { "rights": "All rights reserved.", "contact": "Contact" },
+  "Login": { "title": "Log in", "subtitle": "Sign in to suppIT.me", "email": "E-mail", "password": "Password", "submit": "Log in", "error": "Invalid e-mail or password." },
+  "Admin": {
+    "title": "Admin panel", "welcome": "Welcome, {name}",
+    "dashboard": "Dashboard", "clients": "Clients", "orders": "Orders", "calendar": "Calendar", "inventory": "Inventory", "partOrders": "Part orders", "promotions": "Promotions", "articles": "Articles", "settings": "Settings",
+    "statOpenOrders": "Open orders", "statClients": "Clients", "statReady": "Ready for pickup",
+    "soon": "This module arrives in a later stage."
+  },
+  "Panel": { "title": "My orders", "welcome": "Welcome, {name}", "empty": "You have no orders yet." },
+  "Roles": { "ADMIN": "Administrator", "EMPLOYEE": "Employee", "CLIENT": "Client" }
+}

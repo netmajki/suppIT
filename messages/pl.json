@@ -1,0 +1,27 @@
+{
+  "Meta": { "title": "suppIT.me — serwis i wsparcie IT", "description": "Naprawa komputerów, wsparcie IT, sprzęt i strony WWW." },
+  "Nav": { "services": "Usługi", "about": "O firmie", "repair": "Zgłoś naprawę", "articles": "Baza wiedzy", "partners": "Partnerzy", "promotions": "Promocje", "contact": "Kontakt", "login": "Zaloguj się", "logout": "Wyloguj", "admin": "Panel admina", "panel": "Moje zlecenia" },
+  "Theme": { "toggle": "Przełącz motyw", "light": "Jasny", "dark": "Ciemny", "system": "Systemowy" },
+  "Language": { "label": "Język" },
+  "Home": {
+    "heroTitle": "Wsparcie IT, które po prostu działa",
+    "heroText": "Serwis komputerów i laptopów, sprzęt na zamówienie oraz strony WWW. Śledź status swojego zlecenia online i otrzymuj powiadomienia e-mail lub WhatsApp.",
+    "ctaRepair": "Zgłoś naprawę",
+    "ctaContact": "Skontaktuj się",
+    "featuresTitle": "W czym pomagamy",
+    "f1Title": "Serwis i naprawy", "f1Text": "Diagnoza, naprawa i modernizacja komputerów, laptopów i peryferiów.",
+    "f2Title": "Sprzęt na zamówienie", "f2Text": "Dobór i zakup sprzętu oraz części dopasowanych do Twoich potrzeb.",
+    "f3Title": "Strony WWW", "f3Text": "Projektowanie i utrzymanie stron internetowych dla firm.",
+    "comingSoon": "Strona w budowie — pełna oferta wkrótce."
+  },
+  "Footer": { "rights": "Wszelkie prawa zastrzeżone.", "contact": "Kontakt" },
+  "Login": { "title": "Logowanie", "subtitle": "Zaloguj się do panelu suppIT.me", "email": "E-mail", "password": "Hasło", "submit": "Zaloguj", "error": "Nieprawidłowy e-mail lub hasło." },
+  "Admin": {
+    "title": "Panel administratora", "welcome": "Witaj, {name}",
+    "dashboard": "Pulpit", "clients": "Klienci", "orders": "Zlecenia", "calendar": "Kalendarz", "inventory": "Magazyn", "partOrders": "Zamówienia części", "promotions": "Promocje", "articles": "Artykuły", "settings": "Ustawienia",
+    "statOpenOrders": "Otwarte zlecenia", "statClients": "Klienci", "statReady": "Gotowe do odbioru",
+    "soon": "Ten moduł pojawi się w kolejnym etapie."
+  },
+  "Panel": { "title": "Moje zlecenia", "welcome": "Witaj, {name}", "empty": "Nie masz jeszcze żadnych zleceń." },
+  "Roles": { "ADMIN": "Administrator", "EMPLOYEE": "Pracownik", "CLIENT": "Klient" }
+}
