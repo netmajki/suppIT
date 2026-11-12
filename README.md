@@ -10,7 +10,7 @@ Serwis i wsparcie IT — strona publiczna, panel admina i panel klienta.
 |---|---|---|
 | 1 | Szkielet, baza, logowanie, języki | ✅ |
 | 2 | Klienci i zlecenia, statusy, powiadomienia | ✅ |
-| 3 | Kalendarz, magazyn, zamówienia części | ⏳ |
+| 3 | Kalendarz, magazyn, zamówienia części | ✅ |
 | 4 | Strona publiczna, artykuły, promocje | ⏳ |
 | 5 | Ustawienia, panel klienta, szlify, wdrożenie | ⏳ |
 
@@ -49,6 +49,12 @@ src/lib/settings.ts          ustawienia firmy z bazy (tabela Setting)
 
 Kolory i typografia zdefiniowane jako tokeny w `src/app/globals.css` (niebieski `#1E63D6`, grafit `#3A4552`, szarości `#667180` / `#8792A2`; tryb ciemny — granatowe tło, jasnoszary tekst). Fonty: Poppins (nagłówki), Inter (tekst).
 Pliki logo (`suppit-logo-horizontal.svg`, `suppit-icon.png`) wrzuć do `public/brand/` — do tego czasu `src/components/logo.tsx` renderuje znak słowny.
+
+## Kalendarz, magazyn, części
+
+- **Kalendarz** (`/admin/calendar`, FullCalendar): pokazuje terminy wizyt (`scheduledAt`) i terminy zakończenia (`dueAt`) zleceń prosto z tabeli `Order` oraz własne wydarzenia (`CalendarEvent`, opcjonalnie powiązane ze zleceniem). Przeciągnięcie terminu zlecenia zmienia datę w zleceniu. Dane: `GET /api/calendar?start&end[&mine=1]`.
+- **Magazyn** (`/admin/inventory`): zakładki „Stan firmy” (ilość, stan minimalny, ceny, wartość magazynu, alert niskiego stanu) i „Sprzęt klienta” (powiązany z klientem i zleceniem). Szybka korekta ilości ±1.
+- **Zamówienia części** (`/admin/part-orders`): statusy Do zamówienia → Zamówione → W drodze → Odebrane / Anulowane, dostawca, link, nr przesyłki, przewidywana dostawa (opóźnione na czerwono). Odebranie części dodaje ją do stanu firmy (powiązaną ze zleceniem).
 
 ## Powiadomienia
 

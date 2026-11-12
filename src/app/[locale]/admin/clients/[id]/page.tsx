@@ -25,6 +25,7 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ l
     include: {
       user: { select: { email: true } },
       orders: { orderBy: { createdAt: "desc" }, take: 100 },
+      equipment: { orderBy: { createdAt: "desc" }, take: 100, include: { order: { select: { id: true, number: true } } } },
     },
   });
   if (!client) notFound();
@@ -33,6 +34,7 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ l
   const to = await getTranslations("Orders");
   const tt = await getTranslations("OrderType");
   const tc = await getTranslations("Common");
+  const ti = await getTranslations("Inventory");
 
   const address = [client.street, [client.postalCode, client.city].filter(Boolean).join(" "), client.country].filter(Boolean).join(", ");
 
@@ -100,6 +102,34 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ l
                     <TD>{tt(o.type)}</TD>
                     <TD><StatusBadge status={o.status} /></TD>
                     <TD className="whitespace-nowrap">{formatDate(o.createdAt, locale)}</TD>
+                  </TR>
+                ))}
+              </TBody>
+            </Table>
+          )}
+
+          <div className="flex flex-wrap items-center justify-between gap-2 pt-4">
+            <h3>{ti("equipment")}</h3>
+            <Button asChild size="sm" variant="outline">
+              <Link href={`/admin/inventory/new?ownership=CLIENT&clientId=${id}`}><Plus />{ti("new")}</Link>
+            </Button>
+          </div>
+          {client.equipment.length === 0 ? (
+            <p className="rounded-xl border bg-card p-6 text-muted-foreground">{tc("none")}</p>
+          ) : (
+            <Table>
+              <THead>
+                <tr><TH>{ti("name")}</TH><TH>{ti("serialNumber")}</TH><TH>{ti("location")}</TH><TH>{ti("order")}</TH></tr>
+              </THead>
+              <TBody>
+                {client.equipment.map((i) => (
+                  <TR key={i.id}>
+                    <TD><Link href={`/admin/inventory/${i.id}`} className="font-medium hover:text-primary">{i.name}</Link></TD>
+                    <TD className="font-mono text-xs">{i.serialNumber ?? "—"}</TD>
+                    <TD>{i.location ?? "—"}</TD>
+                    <TD className="font-mono text-xs">
+                      {i.order ? <Link href={`/admin/orders/${i.order.id}`} className="hover:text-primary">{formatOrderNumber(i.order.number)}</Link> : "—"}
+                    </TD>
                   </TR>
                 ))}
               </TBody>

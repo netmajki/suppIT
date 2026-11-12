@@ -37,3 +37,25 @@ export function orderToFormValues(o: Order): OrderFormValues {
     internalNotes: s(o.internalNotes),
   };
 }
+
+/** Zlecenia do list wyboru (nie archiwalne, najnowsze najpierw). */
+export async function getOrderOptions() {
+  const orders = await db.order.findMany({
+    where: { archived: false },
+    orderBy: { number: "desc" },
+    take: 300,
+    select: { id: true, number: true, title: true, client: { select: { name: true } } },
+  });
+  const { formatOrderNumber } = await import("@/lib/order-meta");
+  return orders.map((o) => ({ id: o.id, label: `${formatOrderNumber(o.number)} ${o.title} · ${o.client.name}` }));
+}
+
+export async function getClientSelectOptions() {
+  const clients = await getClientOptions();
+  return clients.map((c) => ({ id: c.id, label: c.companyName ? `${c.name} (${c.companyName})` : c.name }));
+}
+
+export async function getInventoryCategories() {
+  const rows = await db.inventoryItem.findMany({ where: { category: { not: null } }, distinct: ["category"], select: { category: true }, orderBy: { category: "asc" } });
+  return rows.map((r) => r.category!) ;
+}

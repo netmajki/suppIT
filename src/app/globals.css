@@ -90,3 +90,30 @@
     h2 { font-size: 28px; line-height: 36px; }
   }
 }
+
+/* FullCalendar — dopasowanie do motywu */
+.suppit-calendar {
+  --fc-border-color: var(--border);
+  --fc-page-bg-color: var(--card);
+  --fc-neutral-bg-color: var(--muted);
+  --fc-list-event-hover-bg-color: var(--muted);
+  --fc-today-bg-color: color-mix(in srgb, var(--primary) 10%, transparent);
+  --fc-button-bg-color: var(--card);
+  --fc-button-border-color: var(--input);
+  --fc-button-text-color: var(--foreground);
+  --fc-button-hover-bg-color: var(--accent);
+  --fc-button-hover-border-color: var(--input);
+  --fc-button-active-bg-color: var(--primary);
+  --fc-button-active-border-color: var(--primary);
+  --fc-now-indicator-color: var(--destructive);
+  font-size: 14px;
+  line-height: 20px;
+}
+.suppit-calendar .fc .fc-button { font-weight: 600; text-transform: none; box-shadow: none; }
+.suppit-calendar .fc .fc-button-primary.fc-button-active { color: var(--primary-foreground) !important; }
+.suppit-calendar .fc .fc-toolbar-title { font-family: var(--font-heading); font-size: 1.25rem; font-weight: 500; }
+.suppit-calendar .fc a { color: inherit; }
+.suppit-calendar .fc .fc-event { cursor: pointer; }
+@media (max-width: 640px) {
+  .suppit-calendar .fc .fc-toolbar { flex-direction: column; gap: 0.5rem; }
+}

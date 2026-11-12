@@ -1,10 +1,11 @@
 import { notFound } from "next/navigation";
-import { Pencil, Mail, MessageCircle, EyeOff, CheckCircle2, XCircle, Clock } from "lucide-react";
+import { Pencil, Plus, Truck, Mail, MessageCircle, EyeOff, CheckCircle2, XCircle, Clock } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { db } from "@/lib/db";
 import { formatDate, formatMoney } from "@/lib/format";
 import { formatOrderNumber } from "@/lib/order-meta";
+import { partStatusTone } from "@/lib/part-meta";
 import { getCompanySettings } from "@/lib/settings";
 import { PageHeader } from "@/components/admin/page-header";
 import { PriorityBadge, StatusBadge } from "@/components/admin/status-badge";
@@ -36,15 +37,21 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ lo
       assignee: { select: { name: true, email: true } },
       statusHistory: { orderBy: { createdAt: "desc" }, include: { changedBy: { select: { name: true, email: true } } } },
       notifications: { orderBy: { createdAt: "desc" }, take: 30 },
+      items: { orderBy: { createdAt: "asc" } },
+      partOrders: { orderBy: { createdAt: "asc" } },
     },
   });
   if (!order) notFound();
 
-  const [t, tt, tsrc, tc, company] = await Promise.all([
+  const [t, tt, tsrc, tc, ti, tp, tps, tow, company] = await Promise.all([
     getTranslations("Orders"),
     getTranslations("OrderType"),
     getTranslations("OrderSource"),
     getTranslations("Common"),
+    getTranslations("Inventory"),
+    getTranslations("PartOrders"),
+    getTranslations("PartOrderStatus"),
+    getTranslations("Ownership"),
     getCompanySettings(),
   ]);
   const currency = company.currency ?? "PLN";
@@ -108,6 +115,53 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ lo
                   <p className="mb-1 flex items-center gap-1.5 font-semibold"><EyeOff className="size-4" />{t("internalNotes")}</p>
                   <p className="whitespace-pre-wrap">{order.internalNotes}</p>
                 </div>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex-row flex-wrap items-center justify-between gap-2">
+              <CardTitle>{ti("items")}</CardTitle>
+              <div className="flex flex-wrap gap-2">
+                <Button asChild size="sm" variant="outline">
+                  <Link href={`/admin/inventory/new?ownership=CLIENT&clientId=${c.id}&orderId=${order.id}`}><Plus />{tow("CLIENT")}</Link>
+                </Button>
+                <Button asChild size="sm" variant="outline">
+                  <Link href={`/admin/part-orders/new?orderId=${order.id}`}><Truck />{tp("orderPart")}</Link>
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4 text-sm">
+              {order.items.length === 0 && order.partOrders.length === 0 && <p className="text-muted-foreground">{tc("none")}</p>}
+              {order.items.length > 0 && (
+                <ul className="divide-y rounded-md border">
+                  {order.items.map((i) => (
+                    <li key={i.id} className="flex flex-wrap items-center justify-between gap-2 px-3 py-2">
+                      <Link href={`/admin/inventory/${i.id}`} className="font-medium hover:text-primary">
+                        {i.name}
+                        {i.serialNumber && <span className="ml-2 font-mono text-xs text-muted-foreground">S/N {i.serialNumber}</span>}
+                      </Link>
+                      <span className="flex items-center gap-2 text-muted-foreground">
+                        <Badge tone={i.ownership === "CLIENT" ? "cyan" : "gray"}>{tow(i.ownership)}</Badge>×{i.quantity}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {order.partOrders.length > 0 && (
+                <ul className="divide-y rounded-md border">
+                  {order.partOrders.map((p) => (
+                    <li key={p.id} className="flex flex-wrap items-center justify-between gap-2 px-3 py-2">
+                      <Link href={`/admin/part-orders/${p.id}`} className="flex items-center gap-2 font-medium hover:text-primary">
+                        <Truck className="size-4 text-muted-foreground" />{p.partName} ×{p.quantity}
+                      </Link>
+                      <span className="flex items-center gap-2 text-muted-foreground">
+                        {p.expectedAt && p.status !== "RECEIVED" && <span className="text-xs">{formatDate(p.expectedAt, locale)}</span>}
+                        <Badge tone={partStatusTone[p.status]}>{tps(p.status)}</Badge>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
               )}
             </CardContent>
           </Card>

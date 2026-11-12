@@ -6,20 +6,11 @@ import { revalidatePath } from "next/cache";
 import { getLocale } from "next-intl/server";
 import { redirect } from "@/i18n/navigation";
 import { db } from "@/lib/db";
-import { emptyToUndef, formToObject, zodErrors, type FormState } from "@/lib/form";
+import { formToObject, zodErrors, type FormState } from "@/lib/form";
+import { money, optDate as dateTime, optStr } from "@/lib/zod-helpers";
 import { ForbiddenError, requireStaff } from "@/lib/guards";
 import { notifyStatusChange } from "@/lib/notifications";
 import { ORDER_STATUSES } from "@/lib/order-meta";
-
-const optStr = (max = 500) => z.preprocess(emptyToUndef, z.string().trim().max(max).optional());
-const money = z.preprocess(
-  (v) => (typeof v === "string" ? (v.trim() === "" ? undefined : v.replace(",", ".").replace(/\s/g, "")) : v),
-  z.coerce.number({ error: "invalidNumber" }).min(0, "invalidNumber").max(10_000_000, "invalidNumber").optional(),
-);
-const dateTime = z.preprocess(
-  emptyToUndef,
-  z.coerce.date({ error: "invalidDate" }).optional(),
-);
 
 const orderSchema = z.object({
   clientId: z.string({ error: "required" }).min(1, "required"),
