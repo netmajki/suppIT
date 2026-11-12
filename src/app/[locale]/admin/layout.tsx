@@ -29,7 +29,7 @@ export default async function AdminLayout({
   return (
     <div className="min-h-dvh md:grid md:grid-cols-[240px_1fr]">
       <aside className="border-b bg-card p-4 md:min-h-dvh md:border-r md:border-b-0">
-        <Link href="/" className="mb-6 hidden px-3 md:block"><Logo className="text-xl" /></Link>
+        <Link href="/" className="mb-6 hidden px-3 md:block"><Logo className="h-8" /></Link>
         <AdminSidebar />
       </aside>
       <div className="flex min-w-0 flex-col">

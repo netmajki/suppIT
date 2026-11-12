@@ -25,6 +25,7 @@ async function main() {
     "company.email": "kontakt@suppit.me",
     "company.phone": "+48 000 000 000",
     "company.address": "",
+    "company.currency": "PLN",
     "whatsapp.provider": "meta",
     "theme.default": "system",
   };

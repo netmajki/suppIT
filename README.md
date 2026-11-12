@@ -9,7 +9,7 @@ Serwis i wsparcie IT — strona publiczna, panel admina i panel klienta.
 | Etap | Zakres | Status |
 |---|---|---|
 | 1 | Szkielet, baza, logowanie, języki | ✅ |
-| 2 | Klienci i zlecenia, statusy, powiadomienia | ⏳ |
+| 2 | Klienci i zlecenia, statusy, powiadomienia | ✅ |
 | 3 | Kalendarz, magazyn, zamówienia części | ⏳ |
 | 4 | Strona publiczna, artykuły, promocje | ⏳ |
 | 5 | Ustawienia, panel klienta, szlify, wdrożenie | ⏳ |
@@ -49,6 +49,17 @@ src/lib/settings.ts          ustawienia firmy z bazy (tabela Setting)
 
 Kolory i typografia zdefiniowane jako tokeny w `src/app/globals.css` (niebieski `#1E63D6`, grafit `#3A4552`, szarości `#667180` / `#8792A2`; tryb ciemny — granatowe tło, jasnoszary tekst). Fonty: Poppins (nagłówki), Inter (tekst).
 Pliki logo (`suppit-logo-horizontal.svg`, `suppit-icon.png`) wrzuć do `public/brand/` — do tego czasu `src/components/logo.tsx` renderuje znak słowny.
+
+## Powiadomienia
+
+Po zmianie statusu zlecenia klient dostaje powiadomienie kanałami włączonymi w jego kartotece (e-mail i/lub WhatsApp), w swoim języku. Każda próba trafia do historii na stronie zlecenia (wysłano / błąd + powód).
+
+- **E-mail:** SMTP (`SMTP_*`) lub Resend (`RESEND_API_KEY`), nadawca `EMAIL_FROM`.
+- **WhatsApp — Meta Cloud API (domyślnie):** `META_WA_PHONE_NUMBER_ID`, `META_WA_ACCESS_TOKEN`. Wiadomości wysyłane z inicjatywy firmy poza 24-h oknem rozmowy wymagają **zatwierdzonego szablonu** w Meta Business — ustaw `META_WA_TEMPLATE_NAME`. Szablon powinien mieć 4 parametry treści: `{{1}}` klient, `{{2}}` nr zlecenia, `{{3}}` status, `{{4}}` uwagi, i istnieć w językach `pl`, `de`, `en`.
+- **WhatsApp — Twilio:** `WHATSAPP_PROVIDER=twilio`, `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_WHATSAPP_FROM` (+ opcjonalnie `TWILIO_CONTENT_SID` dla szablonu).
+- Treści domyślne: `src/lib/notifications/templates.ts`. Własne szablony per status/kanał/język można zapisać w tabeli `NotificationTemplate` (edytor w Ustawieniach — etap 5).
+
+Konfiguracja jest czytana najpierw z tabeli `Setting`, potem ze zmiennych środowiskowych.
 
 ## Wdrożenie (VPS)
 

@@ -21,7 +21,7 @@ export default async function ClientPanel({ params }: { params: Promise<{ locale
     <div className="min-h-dvh">
       <header className="border-b">
         <div className="mx-auto flex h-16 max-w-4xl items-center justify-between gap-2 px-4">
-          <Link href="/"><Logo className="text-xl" /></Link>
+          <Link href="/"><Logo className="h-8" /></Link>
           <div className="flex items-center gap-1">
             <LocaleSwitcher />
             <ThemeToggle />

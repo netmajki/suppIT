@@ -10,7 +10,7 @@ export async function SiteFooter() {
     <footer className="border-t bg-muted/50">
       <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 sm:flex-row sm:items-start sm:justify-between">
         <div className="space-y-2">
-          <Logo className="text-xl" />
+          <Logo className="h-8" />
           {company.address && <p className="text-sm text-muted-foreground">{company.address}</p>}
         </div>
         <div className="space-y-2 text-sm">

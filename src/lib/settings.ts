@@ -6,6 +6,7 @@ export type CompanySettings = {
   email: string;
   phone: string;
   address: string;
+  currency: string;
 };
 
 const fallback: CompanySettings = {
@@ -13,6 +14,7 @@ const fallback: CompanySettings = {
   email: "kontakt@suppit.me",
   phone: "+48 000 000 000",
   address: "",
+  currency: "PLN",
 };
 
 /** Dane firmy z tabeli Setting (edytowalne w panelu → Ustawienia). */

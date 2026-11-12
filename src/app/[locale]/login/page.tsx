@@ -33,7 +33,7 @@ export default async function LoginPage({
   return (
     <main className="grid min-h-dvh place-items-center bg-muted/40 p-4">
       <div className="w-full max-w-sm space-y-6">
-        <Link href="/" className="flex justify-center"><Logo className="text-3xl" /></Link>
+        <Link href="/" className="flex justify-center"><Logo className="h-12" /></Link>
         <Card>
           <CardHeader>
             <CardTitle>{t("title")}</CardTitle>

@@ -17,7 +17,11 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Meta" });
-  return { title: { default: t("title"), template: "%s · suppIT.me" }, description: t("description") };
+  return {
+    title: { default: t("title"), template: "%s · suppIT.me" },
+    description: t("description"),
+    icons: { icon: "/brand/suppit-icon.png", apple: "/brand/suppit-icon.png" },
+  };
 }
 
 export default async function LocaleLayout({
