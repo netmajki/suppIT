@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Branding suppIT.me */
+:root {
+  --brand-blue: #1e63d6;
+  --brand-graphite: #3a4552;
+  --brand-gray: #667180;
+  --brand-gray-light: #8792a2;
+
+  --background: #ffffff;
+  --foreground: #3a4552;
+  --card: #ffffff;
+  --card-foreground: #3a4552;
+  --muted: #f3f5f8;
+  --muted-foreground: #667180;
+  --border: #e2e6ec;
+  --input: #d5dbe3;
+  --primary: #1e63d6;
+  --primary-foreground: #ffffff;
+  --accent: #eaf1fc;
+  --accent-foreground: #1e63d6;
+  --destructive: #d63b3b;
+  --ring: #1e63d6;
+  --radius: 0.625rem;
+}
+
+/* Tryb ciemny: akcent #1E63D6, tło ciemny granat, tekst jasnoszary */
+.dark {
+  --background: #0b1424;
+  --foreground: #d6dce5;
+  --card: #111d33;
+  --card-foreground: #d6dce5;
+  --muted: #16233c;
+  --muted-foreground: #8792a2;
+  --border: #22314d;
+  --input: #2a3b5a;
+  --primary: #1e63d6;
+  --primary-foreground: #ffffff;
+  --accent: #172b4f;
+  --accent-foreground: #8fb4f0;
+  --destructive: #e05252;
+  --ring: #3d7ce6;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-ring: var(--ring);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-graphite: var(--brand-graphite);
+  --color-brand-gray: var(--brand-gray);
+  --color-brand-gray-light: var(--brand-gray-light);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  * { border-color: var(--border); }
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 28px;
+  }
+  h1, h2, h3, h4 { font-family: var(--font-heading); }
+  /* Skala typografii z brandbooka */
+  h1 { font-size: 48px; line-height: 56px; font-weight: 700; }
+  h2 { font-size: 36px; line-height: 44px; font-weight: 700; }
+  h3 { font-size: 24px; line-height: 32px; font-weight: 500; }
+  @media (max-width: 640px) {
+    h1 { font-size: 34px; line-height: 42px; }
+    h2 { font-size: 28px; line-height: 36px; }
+  }
+}

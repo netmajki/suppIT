@@ -1,0 +1,9 @@
+# Lokalnie: tylko baza danych — docker compose -f docker-compose.dev.yml up -d
+services:
+  db:
+    image: postgres:16-alpine
+    environment: { POSTGRES_USER: suppit, POSTGRES_PASSWORD: suppit, POSTGRES_DB: suppit }
+    ports: ["5432:5432"]
+    volumes: [pgdata_dev:/var/lib/postgresql/data]
+volumes:
+  pgdata_dev:
