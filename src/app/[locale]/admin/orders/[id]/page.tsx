@@ -54,7 +54,7 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ lo
     getTranslations("Ownership"),
     getCompanySettings(),
   ]);
-  const currency = company.currency ?? "PLN";
+  const currency = company.currency ?? "EUR";
   const c = order.client;
   const channels = [
     ...(c.notifyEmail && c.email ? ["E-mail"] : []),

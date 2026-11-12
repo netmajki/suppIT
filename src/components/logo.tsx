@@ -4,7 +4,11 @@ import { cn } from "@/lib/utils";
  * Logo suppIT.me (z public/brand/suppit-logo-horizontal.svg) jako inline SVG:
  * napis "supp" używa currentColor, dzięki czemu jest czytelny w trybie ciemnym.
  */
-export function Logo({ className }: { className?: string }) {
+export function Logo({ className, src }: { className?: string; src?: string | null }) {
+  if (src) {
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img src={src} alt="Logo" className={cn("h-9 w-auto max-w-56 object-contain", className)} />;
+  }
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

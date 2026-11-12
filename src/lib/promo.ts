@@ -20,7 +20,7 @@ export async function findValidPromo(code: string) {
   return promo && promoState(promo) === "active" ? promo : null;
 }
 
-export function describeDiscount(p: Pick<Promotion, "discountType" | "value">, locale: string, currency = "PLN") {
+export function describeDiscount(p: Pick<Promotion, "discountType" | "value">, locale: string, currency = "EUR") {
   return p.discountType === "PERCENT" ? `−${Number(p.value)}%` : `−${formatMoney(p.value, locale, currency)}`;
 }
 

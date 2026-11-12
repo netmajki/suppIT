@@ -10,6 +10,7 @@ import { LocaleTabs } from "@/components/admin/locale-tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { ImageUploadField } from "@/components/admin/image-upload-field";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -35,7 +36,7 @@ export function ArticleForm({ action, initial, categories }: { action: Action; i
             <datalist id="article-categories">{categories.map((c) => <option key={c} value={c} />)}</datalist>
           </FormField>
           <FormField label={t("coverImage")} htmlFor="coverImage" error={err("coverImage")}>
-            <Input id="coverImage" name="coverImage" type="url" placeholder="https://" defaultValue={v.coverImage ?? ""} />
+            <ImageUploadField id="coverImage" name="coverImage" defaultValue={v.coverImage ?? ""} previewClassName="h-24" />
           </FormField>
           <Label className="flex items-center gap-2">
             <Checkbox name="published" defaultChecked={v.published === "on"} /> {t("published")}

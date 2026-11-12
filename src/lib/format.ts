@@ -11,7 +11,7 @@ export function formatDate(d: Date | null | undefined, locale: string, withTime 
   }).format(d);
 }
 
-export function formatMoney(v: Prisma.Decimal | number | null | undefined, locale: string, currency = "PLN") {
+export function formatMoney(v: Prisma.Decimal | number | null | undefined, locale: string, currency = "EUR") {
   if (v === null || v === undefined) return "—";
   return new Intl.NumberFormat(toIntlLocale(locale), { style: "currency", currency }).format(Number(v));
 }

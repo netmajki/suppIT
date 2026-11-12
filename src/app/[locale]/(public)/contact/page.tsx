@@ -15,7 +15,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
   const { locale } = await params;
   setRequestLocale(locale);
   const [t, company] = await Promise.all([getTranslations("Contact"), getCompanySettings()]);
-  const wa = normalizePhone(company.phone);
+  const wa = normalizePhone(company.phone, company.phoneCountryCode);
   return (
     <>
       <PageHero title={t("title")} intro={t("intro")} />

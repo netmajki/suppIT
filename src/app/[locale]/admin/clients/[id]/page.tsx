@@ -10,6 +10,7 @@ import { whatsappLink } from "@/lib/phone";
 import { PageHeader } from "@/components/admin/page-header";
 import { StatusBadge } from "@/components/admin/status-badge";
 import { DeleteClientButton } from "@/components/admin/delete-client-button";
+import { InviteClientButton } from "@/components/admin/invite-client-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -77,6 +78,9 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ l
             </div>
             {client.user && (
               <p className="flex items-center gap-2 text-muted-foreground"><UserCheck className="size-4" />{t("accountActive", { email: client.user.email })}</p>
+            )}
+            {client.email && (
+              <div className="pt-1"><InviteClientButton clientId={id} hasAccount={!!client.user} /></div>
             )}
             {client.notes && <p className="whitespace-pre-wrap border-t pt-3 text-muted-foreground">{client.notes}</p>}
             {session?.user.role === "ADMIN" && client.orders.length === 0 && (

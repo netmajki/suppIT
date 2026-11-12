@@ -38,13 +38,24 @@ const confirm: Record<Locale, { subject: string; body: string }> = {
 };
 
 /** Potwierdzenie przyjęcia zgłoszenia dla klienta (zapisywane w NotificationLog). */
-export async function sendRepairConfirmation(opts: { orderId: string; email: string; name: string; number: string; locale: Locale }) {
+const activationText: Record<Locale, string> = {
+  pl: "Status zgłoszenia możesz śledzić w panelu klienta. Ustaw hasło do konta (link ważny 7 dni):",
+  de: "Den Status können Sie im Kundenbereich verfolgen. Legen Sie Ihr Passwort fest (Link 7 Tage gültig):",
+  en: "You can track the status in your customer account. Set your password here (link valid for 7 days):",
+};
+
+export async function sendRepairConfirmation(opts: { orderId: string; email: string; name: string; number: string; locale: Locale; activationLink?: string }) {
   const log = await db.notificationLog.create({ data: { channel: "EMAIL", recipient: opts.email, orderId: opts.orderId } });
   try {
     const [config, company] = await Promise.all([getNotificationConfig(), getCompanySettings()]);
     const tpl = confirm[opts.locale];
     const fill = (s: string) => s.replace(/\{name\}/g, opts.name).replace(/\{number\}/g, opts.number).replace(/\{company\}/g, company.name);
-    const text = fill(tpl.body);
+    let text = fill(tpl.body);
+    if (opts.activationLink) {
+      const parts = text.split("\n\n");
+      parts.splice(parts.length - 1, 0, `${activationText[opts.locale]}\n${opts.activationLink}`);
+      text = parts.join("\n\n");
+    }
     await sendEmail(config.email, { to: opts.email, subject: fill(tpl.subject), text, html: emailHtml(text, company.name) });
     await db.notificationLog.update({ where: { id: log.id }, data: { state: "SENT", sentAt: new Date() } });
   } catch (e) {

@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { CheckCircle2 } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { submitRepairRequest } from "@/lib/actions/public";
 import { FormField } from "@/components/form-field";
@@ -18,6 +19,7 @@ import { Textarea } from "@/components/ui/textarea";
 export function RepairForm({ defaultPromo }: { defaultPromo?: string }) {
   const t = useTranslations("Repair");
   const te = useTranslations("Errors");
+  const tl = useTranslations("Legal");
   const locale = useLocale();
   const [state, action] = useActionState(submitRepairRequest, {});
   const v = state.values ?? {};
@@ -96,6 +98,7 @@ export function RepairForm({ defaultPromo }: { defaultPromo?: string }) {
         <Label className="flex items-start gap-2 font-normal">
           <Checkbox name="consent" className="mt-0.5" defaultChecked={v.consent === "on"} /> {t("consent")}
         </Label>
+        <p className="pl-6 text-xs"><Link href="/datenschutz" target="_blank" className="text-primary hover:underline">{tl("readPrivacy")}</Link></p>
         {err("consent") && <p className="pl-6 text-xs text-destructive">{err("consent")}</p>}
       </div>
       <SubmitButton size="lg">{t("submit")}</SubmitButton>

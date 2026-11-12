@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { CheckCircle2 } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { submitContactMessage } from "@/lib/actions/public";
 import { FormField } from "@/components/form-field";
@@ -15,6 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 export function ContactForm() {
   const t = useTranslations("Contact");
   const te = useTranslations("Errors");
+  const tl = useTranslations("Legal");
   const [state, action] = useActionState(submitContactMessage, {});
   const v = state.values ?? {};
   const err = (k: string) => (state.errors?.[k] ? te(state.errors[k] as never) : undefined);
@@ -45,6 +47,7 @@ export function ContactForm() {
       </div>
       <div className="space-y-1">
         <Label className="flex items-start gap-2 font-normal"><Checkbox name="consent" className="mt-0.5" defaultChecked={v.consent === "on"} /> {t("consent")}</Label>
+        <p className="pl-6 text-xs"><Link href="/datenschutz" target="_blank" className="text-primary hover:underline">{tl("readPrivacy")}</Link></p>
         {err("consent") && <p className="pl-6 text-xs text-destructive">{err("consent")}</p>}
       </div>
       <SubmitButton>{t("submit")}</SubmitButton>

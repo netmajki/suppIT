@@ -24,7 +24,7 @@ services:
       SEED_ADMIN_EMAIL: ${SEED_ADMIN_EMAIL:-kontakt@suppit.me}
       SEED_ADMIN_PASSWORD: ${SEED_ADMIN_PASSWORD:-}
       APP_URL: https://${DOMAIN:-suppit.me}
-      TZ: ${TZ:-Europe/Warsaw}
+      TZ: ${TZ:-Europe/Berlin}
       EMAIL_PROVIDER: ${EMAIL_PROVIDER:-}
       EMAIL_FROM: ${EMAIL_FROM:-}
       SMTP_HOST: ${SMTP_HOST:-}
@@ -48,6 +48,8 @@ services:
     build: { context: ., target: runner }
     restart: unless-stopped
     environment: *appenv
+    volumes:
+      - uploads:/app/uploads
     depends_on:
       migrate: { condition: service_completed_successfully }
 
@@ -65,5 +67,6 @@ services:
 
 volumes:
   pgdata:
+  uploads:
   caddy_data:
   caddy_config:

@@ -66,7 +66,7 @@ export function ClientForm({
             <Input id="whatsapp" name="whatsapp" type="tel" defaultValue={val("whatsapp")} placeholder="+48…" />
           </FormField>
           <FormField label={t("locale")} htmlFor="locale">
-            <Select id="locale" name="locale" defaultValue={val("locale") || "pl"}>
+            <Select id="locale" name="locale" defaultValue={val("locale") || "de"}>
               <option value="pl">Polski</option>
               <option value="de">Deutsch</option>
               <option value="en">English</option>
@@ -100,7 +100,7 @@ export function ClientForm({
             <Input id="city" name="city" defaultValue={val("city")} />
           </FormField>
           <FormField label={t("country")} htmlFor="country" className="sm:col-span-2">
-            <Input id="country" name="country" defaultValue={val("country") || "PL"} />
+            <Input id="country" name="country" defaultValue={val("country") || "DE"} />
           </FormField>
           <FormField label={t("notes")} htmlFor="notes" className="sm:col-span-6">
             <Textarea id="notes" name="notes" defaultValue={val("notes")} />

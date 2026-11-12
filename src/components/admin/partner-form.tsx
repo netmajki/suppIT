@@ -9,6 +9,7 @@ import { FormAlert } from "@/components/admin/form-alert";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { ImageUploadField } from "@/components/admin/image-upload-field";
 import { Label } from "@/components/ui/label";
 
 type Action = (prev: FormState, fd: FormData) => Promise<FormState>;
@@ -31,8 +32,8 @@ export function PartnerForm({ action, initial }: { action: Action; initial?: Rec
           <FormField label={t("url")} htmlFor="url" error={err("url")}>
             <Input id="url" name="url" type="url" placeholder="https://" defaultValue={v.url ?? ""} />
           </FormField>
-          <FormField label={t("logoUrl")} htmlFor="logoUrl" error={err("logoUrl")}>
-            <Input id="logoUrl" name="logoUrl" type="url" placeholder="https://" defaultValue={v.logoUrl ?? ""} />
+          <FormField label={t("logoUrl")} htmlFor="logoUrl" error={err("logoUrl")} className="sm:col-span-2">
+            <ImageUploadField id="logoUrl" name="logoUrl" defaultValue={v.logoUrl ?? ""} />
           </FormField>
           <FormField label={t("sortOrder")} htmlFor="sortOrder" error={err("sortOrder")}>
             <Input id="sortOrder" name="sortOrder" type="number" min={0} defaultValue={v.sortOrder ?? "0"} />

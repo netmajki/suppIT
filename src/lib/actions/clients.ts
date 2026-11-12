@@ -9,16 +9,17 @@ import { db } from "@/lib/db";
 import { emptyToUndef, formToObject, zodErrors, type FormState } from "@/lib/form";
 import { ForbiddenError, requireAdmin, requireStaff } from "@/lib/guards";
 import { normalizePhone } from "@/lib/phone";
+import { getCompanySettings } from "@/lib/settings";
 
 const optStr = z.preprocess(emptyToUndef, z.string().trim().max(500).optional());
-const phone = z.preprocess(
+const phoneField = (cc: string) => z.preprocess(
   emptyToUndef,
   z
     .string()
     .optional()
     .transform((v, ctx) => {
       if (!v) return undefined;
-      const n = normalizePhone(v);
+      const n = normalizePhone(v, cc);
       if (!n) {
         ctx.addIssue({ code: "custom", message: "invalidPhone" });
         return z.NEVER;
@@ -27,16 +28,16 @@ const phone = z.preprocess(
     }),
 );
 
-const clientSchema = z
+const clientSchema = (cc: string) => z
   .object({
     name: z.string({ error: "required" }).trim().min(1, "required").max(200),
     companyName: optStr,
     email: z.preprocess(emptyToUndef, z.string().trim().toLowerCase().email("invalidEmail").optional()),
-    phone,
-    whatsapp: phone,
+    phone: phoneField(cc),
+    whatsapp: phoneField(cc),
     notifyEmail: z.preprocess((v) => v === "on", z.boolean()),
     notifyWhatsapp: z.preprocess((v) => v === "on", z.boolean()),
-    locale: z.enum(["pl", "de", "en"]).default("pl"),
+    locale: z.enum(["pl", "de", "en"]).default("de"),
     street: optStr,
     postalCode: optStr,
     city: optStr,
@@ -51,7 +52,7 @@ const clientSchema = z
     if (d.password && !d.email) ctx.addIssue({ code: "custom", path: ["email"], message: "emailRequiredForAccount" });
   });
 
-type ClientInput = z.infer<typeof clientSchema>;
+type ClientInput = z.infer<ReturnType<typeof clientSchema>>;
 
 function clientData({ password: _pw, ...d }: ClientInput) {
   return {
@@ -103,7 +104,7 @@ export async function createClient(_prev: FormState, fd: FormData): Promise<Form
   let id: string;
   try {
     await requireStaff();
-    const parsed = clientSchema.safeParse(values);
+    const parsed = clientSchema((await getCompanySettings()).phoneCountryCode).safeParse(values);
     if (!parsed.success) return { errors: zodErrors(parsed.error), values };
 
     if (parsed.data.password && parsed.data.email) {
@@ -127,7 +128,7 @@ export async function updateClient(id: string, _prev: FormState, fd: FormData): 
   const values = formToObject(fd);
   try {
     await requireStaff();
-    const parsed = clientSchema.safeParse(values);
+    const parsed = clientSchema((await getCompanySettings()).phoneCountryCode).safeParse(values);
     if (!parsed.success) return { errors: zodErrors(parsed.error), values };
 
     const accountError = await syncClientAccount(id, parsed.data);

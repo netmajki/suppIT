@@ -25,7 +25,7 @@ const revalidatePublic = () => revalidatePath("/[locale]", "layout");
 
 const articleBase = z.object({
   category: optStr(100),
-  coverImage: z.preprocess((v) => (v === "" ? undefined : v), z.string().trim().url("invalidUrl").max(1000).optional()),
+  coverImage: z.preprocess((v) => (v === "" ? undefined : v), z.string().trim().regex(/^(https?:\/\/|\/uploads\/)\S+$/, "invalidUrl").max(1000).optional()),
   published: checkbox,
 });
 
@@ -198,10 +198,11 @@ export async function deletePromotion(id: string) {
 // ───────────── Partnerzy ─────────────
 
 const urlOpt = z.preprocess((v) => (v === "" ? undefined : v), z.string().trim().url("invalidUrl").max(1000).optional());
+const imageUrlOpt = z.preprocess((v) => (v === "" ? undefined : v), z.string().trim().regex(/^(https?:\/\/|\/uploads\/)\S+$/, "invalidUrl").max(1000).optional());
 const partnerSchema = z.object({
   name: z.string({ error: "required" }).trim().min(1, "required").max(200),
   url: urlOpt,
-  logoUrl: urlOpt,
+  logoUrl: imageUrlOpt,
   sortOrder: intField(0),
   active: checkbox,
 });

@@ -1,4 +1,5 @@
 import "server-only";
+import { decryptSecret } from "@/lib/crypto";
 import { db } from "@/lib/db";
 
 export type EmailConfig =
@@ -25,7 +26,7 @@ export type WhatsAppConfig =
 async function readSettings() {
   try {
     const rows = await db.setting.findMany({ where: { OR: [{ key: { startsWith: "email." } }, { key: { startsWith: "whatsapp." } }] } });
-    return Object.fromEntries(rows.map((r) => [r.key, typeof r.value === "string" ? r.value : String(r.value ?? "")]));
+    return Object.fromEntries(rows.map((r) => [r.key, typeof r.value === "string" ? decryptSecret(r.value) : String(r.value ?? "")]));
   } catch {
     return {} as Record<string, string>;
   }

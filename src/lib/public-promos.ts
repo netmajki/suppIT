@@ -12,7 +12,7 @@ export async function getPublicPromotions(locale: Locale) {
   return promos
     .filter((p) => promoState(p) === "active")
     .map((p) => {
-      const tr = p.translations.find((t) => t.locale === locale) ?? p.translations.find((t) => t.locale === "pl") ?? p.translations[0];
+      const tr = p.translations.find((t) => t.locale === locale) ?? p.translations.find((t) => t.locale === "de") ?? p.translations.find((t) => t.locale === "pl") ?? p.translations[0];
       return tr ? { ...p, title: tr.title, description: tr.description } : null;
     })
     .filter((p): p is NonNullable<typeof p> => p !== null);

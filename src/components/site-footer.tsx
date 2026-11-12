@@ -7,14 +7,14 @@ import { getCompanySettings } from "@/lib/settings";
 import { Logo } from "@/components/logo";
 
 export async function SiteFooter() {
-  const [t, tn, tc] = await Promise.all([getTranslations("Footer"), getTranslations("Nav"), getTranslations("Contact")]);
+  const [t, tn, tc, tl] = await Promise.all([getTranslations("Footer"), getTranslations("Nav"), getTranslations("Contact"), getTranslations("Legal")]);
   const company = await getCompanySettings();
-  const wa = normalizePhone(company.phone);
+  const wa = normalizePhone(company.phone, company.phoneCountryCode);
   return (
     <footer className="border-t bg-muted/50">
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:grid-cols-2 lg:grid-cols-3">
         <div className="space-y-3">
-          <Logo className="h-8" />
+          <Logo className="h-8" src={company.logoUrl} />
           <p className="text-sm text-muted-foreground">{(await getTranslations("Meta"))("description")}</p>
         </div>
         <div className="space-y-2 text-sm">
@@ -38,9 +38,13 @@ export async function SiteFooter() {
           {company.address && <p className="flex items-start gap-2 text-muted-foreground"><MapPin className="mt-1 size-4 shrink-0" />{company.address}</p>}
         </div>
       </div>
-      <p className="border-t py-4 text-center text-sm text-muted-foreground">
-        © {new Date().getFullYear()} {company.name}. {t("rights")}
-      </p>
+      <div className="flex flex-col items-center justify-center gap-2 border-t px-4 py-4 text-sm text-muted-foreground sm:flex-row sm:gap-6">
+        <span>© {new Date().getFullYear()} {company.name}. {t("rights")}</span>
+        <span className="flex gap-4">
+          <Link href="/impressum" className="hover:text-primary">{tl("impressum")}</Link>
+          <Link href="/datenschutz" className="hover:text-primary">{tl("privacy")}</Link>
+        </span>
+      </div>
     </footer>
   );
 }

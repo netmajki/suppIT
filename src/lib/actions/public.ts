@@ -3,7 +3,10 @@
 import { z } from "zod";
 import { after } from "next/server";
 import type { Locale } from "@prisma/client";
+import bcrypt from "bcryptjs";
+import { randomToken } from "@/lib/crypto";
 import { db } from "@/lib/db";
+import { createPasswordLink } from "@/lib/password-reset";
 import { formToObject, zodErrors, type FormState } from "@/lib/form";
 import { formatOrderNumber } from "@/lib/order-meta";
 import { normalizePhone } from "@/lib/phone";
@@ -13,14 +16,14 @@ import { getCompanySettings } from "@/lib/settings";
 import { checkbox, optStr } from "@/lib/zod-helpers";
 import { sendAdminEmail, sendRepairConfirmation } from "@/lib/notifications/direct";
 
-const localeSchema = z.enum(["pl", "de", "en"]).catch("pl");
+const localeSchema = z.enum(["pl", "de", "en"]).catch("de");
 const consent = z.preprocess((v) => v === "on", z.literal(true, { error: "consentRequired" }));
-const requiredPhone = z
+const requiredPhone = (cc: string) => z
   .string({ error: "required" })
   .trim()
   .min(1, "required")
   .transform((v, ctx) => {
-    const n = normalizePhone(v);
+    const n = normalizePhone(v, cc);
     if (!n) {
       ctx.addIssue({ code: "custom", message: "invalidPhone" });
       return z.NEVER;
@@ -28,10 +31,10 @@ const requiredPhone = z
     return n;
   });
 
-const repairSchema = z.object({
+const repairSchema = (cc: string) => z.object({
   name: z.string({ error: "required" }).trim().min(2, "required").max(200),
   email: z.string({ error: "required" }).trim().toLowerCase().min(1, "required").email("invalidEmail").max(200),
-  phone: requiredPhone,
+  phone: requiredPhone(cc),
   whatsappOptIn: checkbox,
   type: z.enum(["SERVICE", "PURCHASE", "WEBSITE"]).catch("SERVICE"),
   deviceType: optStr(100),
@@ -51,7 +54,7 @@ export async function submitRepairRequest(_prev: FormState, fd: FormData): Promi
   if (isBot(values)) return { ok: true, message: "#00000" };
   if (await isRateLimited("repair", 5)) return { message: "tooMany", values };
 
-  const parsed = repairSchema.safeParse(values);
+  const parsed = repairSchema((await getCompanySettings()).phoneCountryCode).safeParse(values);
   if (!parsed.success) return { errors: zodErrors(parsed.error), values };
   const d = parsed.data;
 
@@ -107,10 +110,27 @@ export async function submitRepairRequest(_prev: FormState, fd: FormData): Promi
       return o;
     });
 
+    // Konto w panelu klienta: zakładane automatycznie, klient ustawia hasło z linku w potwierdzeniu
+    let activationLink: string | undefined;
+    const hasUser = await db.user.findFirst({ where: { OR: [{ clientId: client.id }, { email: d.email }] }, select: { id: true } });
+    if (!hasUser && client.email) {
+      const user = await db.user.create({
+        data: {
+          email: client.email.toLowerCase(),
+          name: client.name,
+          role: "CLIENT",
+          locale: client.locale,
+          clientId: client.id,
+          passwordHash: await bcrypt.hash(randomToken(), 12),
+        },
+      });
+      activationLink = await createPasswordLink(user.id, client.locale, 24 * 7);
+    }
+
     const number = formatOrderNumber(order.number);
     const appUrl = (process.env.APP_URL ?? "").replace(/\/$/, "");
     after(async () => {
-      await sendRepairConfirmation({ orderId: order.id, email: d.email, name: d.name, number, locale: d.locale as Locale });
+      await sendRepairConfirmation({ orderId: order.id, email: d.email, name: d.name, number, locale: d.locale as Locale, activationLink });
       await sendAdminEmail(
         `Nowe zgłoszenie ${number} (${typeLabel}) — ${d.name}`,
         [

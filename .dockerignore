@@ -5,3 +5,5 @@ node_modules
 .env*.local
 Dockerfile
 docker-compose.yml
+uploads
+backups

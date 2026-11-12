@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import type { OrderStatus } from "@prisma/client";
 import { changeOrderStatus } from "@/lib/actions/orders";
@@ -26,6 +26,8 @@ export function StatusChangeForm({
   const ts = useTranslations("Status");
   const [state, action] = useActionState(changeOrderStatus.bind(null, orderId), {});
   const [visible, setVisible] = useState(true);
+  // po każdej zmianie statusu wracamy do domyślnego "widoczne dla klienta"
+  useEffect(() => setVisible(true), [current]);
   const nextIdx = Math.min(ORDER_STATUSES.indexOf(current) + 1, ORDER_STATUSES.length - 2);
 
   return (
