@@ -23,8 +23,10 @@ async function main() {
   const defaults: Record<string, unknown> = {
     "company.name": "suppIT.me",
     "company.email": "kontakt@suppit.me",
-    "company.phone": "+48 000 000 000",
+    "company.phone": "+49 000 0000000",
+    "company.phoneCountryCode": "49",
     "company.address": "",
+    "company.currency": "EUR",
     "whatsapp.provider": "meta",
     "theme.default": "system",
   };

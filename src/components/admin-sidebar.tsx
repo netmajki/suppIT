@@ -5,7 +5,7 @@ import { Link, usePathname } from "@/i18n/navigation";
 import { adminModules } from "@/lib/admin-nav";
 import { cn } from "@/lib/utils";
 
-export function AdminSidebar() {
+export function AdminSidebar({ badges = {} }: { badges?: Record<string, number> }) {
   const t = useTranslations("Admin");
   const pathname = usePathname();
   return (
@@ -24,6 +24,9 @@ export function AdminSidebar() {
           >
             <Icon className="size-4" />
             {t(key)}
+            {badges[key] ? (
+              <span className="ml-auto rounded-full bg-primary px-1.5 text-xs leading-5 font-semibold text-primary-foreground">{badges[key]}</span>
+            ) : null}
           </Link>
         );
       })}

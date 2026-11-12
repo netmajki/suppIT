@@ -2,7 +2,9 @@
 // Etap 1 używa modelu User; pozostałe modele są przygotowane pod kolejne etapy.
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  // linux-musl-openssl-3.0.x = obraz Docker node:22-alpine
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
@@ -30,7 +32,7 @@ model User {
   name         String?
   passwordHash String
   role         Role     @default(CLIENT)
-  locale       Locale   @default(pl)
+  locale       Locale   @default(de)
   active       Boolean  @default(true)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -39,9 +41,24 @@ model User {
   client   Client? @relation(fields: [clientId], references: [id], onDelete: SetNull)
   clientId String? @unique
 
-  assignedOrders Order[]             @relation("OrderAssignee")
+  assignedOrders Order[]              @relation("OrderAssignee")
   statusChanges  OrderStatusChange[]
   events         CalendarEvent[]
+  resetTokens    PasswordResetToken[]
+}
+
+// Link do ustawienia / resetu hasła (zaproszenie klienta, "zapomniałem hasła")
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique // SHA-256 tokenu; sam token trafia tylko do e-maila
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  @@index([userId])
 }
 
 // ───────────── Klienci ─────────────
@@ -55,11 +72,11 @@ model Client {
   whatsapp       String? // numer w formacie E.164, np. +48123456789
   notifyEmail    Boolean  @default(true)
   notifyWhatsapp Boolean  @default(false)
-  locale         Locale   @default(pl)
+  locale         Locale   @default(de)
   street         String?
   postalCode     String?
   city           String?
-  country        String?  @default("PL")
+  country        String?  @default("DE")
   taxId          String?
   notes          String?
   createdAt      DateTime @default(now())

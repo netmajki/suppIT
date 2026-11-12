@@ -3,7 +3,7 @@ import type { Role } from "@prisma/client";
 
 // Konfiguracja bezpieczna dla Edge (używana w middleware) — bez Prisma i bcrypt.
 export const authConfig = {
-  pages: { signIn: "/pl/login" },
+  pages: { signIn: "/de/login" },
   session: { strategy: "jwt" },
   providers: [],
   callbacks: {

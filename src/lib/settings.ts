@@ -1,27 +1,49 @@
+import "server-only";
 import { cache } from "react";
 import { db } from "@/lib/db";
+import { decryptSecret } from "@/lib/crypto";
+import { SETTINGS, type SettingDef, type SettingKey } from "@/lib/settings-registry";
+
+/** Wszystkie ustawienia (wartości z bazy lub domyślne). Sekrety są odszyfrowane — nie wysyłaj ich do przeglądarki. */
+export const getAllSettings = cache(async (): Promise<Record<SettingKey, string>> => {
+  const out = Object.fromEntries(Object.entries(SETTINGS).map(([k, d]) => [k, d.default])) as Record<SettingKey, string>;
+  try {
+    const rows = await db.setting.findMany();
+    for (const r of rows) {
+      if (!(r.key in SETTINGS)) continue;
+      const raw = typeof r.value === "string" ? r.value : r.value === null ? "" : String(r.value);
+      out[r.key as SettingKey] = (SETTINGS[r.key as SettingKey] as SettingDef).secret ? decryptSecret(raw) : raw;
+    }
+  } catch {
+    /* baza niedostępna (np. podczas budowania) — wartości domyślne */
+  }
+  return out;
+});
+
+export async function getSetting(key: SettingKey) {
+  return (await getAllSettings())[key];
+}
 
 export type CompanySettings = {
   name: string;
   email: string;
   phone: string;
   address: string;
+  currency: string;
+  phoneCountryCode: string;
+  logoUrl: string;
 };
 
-const fallback: CompanySettings = {
-  name: "suppIT.me",
-  email: "kontakt@suppit.me",
-  phone: "+48 000 000 000",
-  address: "",
-};
-
-/** Dane firmy z tabeli Setting (edytowalne w panelu → Ustawienia). */
+/** Dane firmy (edytowalne w panelu → Ustawienia). */
 export const getCompanySettings = cache(async (): Promise<CompanySettings> => {
-  try {
-    const rows = await db.setting.findMany({ where: { key: { startsWith: "company." } } });
-    const map = Object.fromEntries(rows.map((r) => [r.key.replace("company.", ""), r.value]));
-    return { ...fallback, ...(map as Partial<CompanySettings>) };
-  } catch {
-    return fallback;
-  }
+  const s = await getAllSettings();
+  return {
+    name: s["company.name"] || "suppIT.me",
+    email: s["company.email"],
+    phone: s["company.phone"],
+    address: s["company.address"],
+    currency: s["company.currency"] || "EUR",
+    phoneCountryCode: s["company.phoneCountryCode"] || "49",
+    logoUrl: s["company.logoUrl"],
+  };
 });
