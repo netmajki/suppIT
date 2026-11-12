@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { auth } from "@/auth";
 import { Link } from "@/i18n/navigation";
 import { isStaff } from "@/lib/roles";
+import { db } from "@/lib/db";
 import { Logo } from "@/components/logo";
 import { AdminSidebar } from "@/components/admin-sidebar";
 import { LocaleSwitcher } from "@/components/locale-switcher";
@@ -25,12 +26,13 @@ export default async function AdminLayout({
   if (!session) redirect(`/${locale}/login`);
   if (!isStaff(session.user.role)) redirect(`/${locale}/panel`);
   const t = await getTranslations("Roles");
+  const unread = await db.contactMessage.count({ where: { handled: false } });
 
   return (
     <div className="min-h-dvh md:grid md:grid-cols-[240px_1fr]">
       <aside className="border-b bg-card p-4 md:min-h-dvh md:border-r md:border-b-0">
         <Link href="/" className="mb-6 hidden px-3 md:block"><Logo className="h-8" /></Link>
-        <AdminSidebar />
+        <AdminSidebar badges={{ messages: unread }} />
       </aside>
       <div className="flex min-w-0 flex-col">
         <header className="flex h-16 items-center justify-end gap-2 border-b px-4">

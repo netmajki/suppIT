@@ -11,7 +11,7 @@ Serwis i wsparcie IT — strona publiczna, panel admina i panel klienta.
 | 1 | Szkielet, baza, logowanie, języki | ✅ |
 | 2 | Klienci i zlecenia, statusy, powiadomienia | ✅ |
 | 3 | Kalendarz, magazyn, zamówienia części | ✅ |
-| 4 | Strona publiczna, artykuły, promocje | ⏳ |
+| 4 | Strona publiczna, artykuły, promocje | ✅ |
 | 5 | Ustawienia, panel klienta, szlify, wdrożenie | ⏳ |
 
 Schemat bazy (`prisma/schema.prisma`) zawiera już modele dla wszystkich etapów.
@@ -55,6 +55,15 @@ Pliki logo (`suppit-logo-horizontal.svg`, `suppit-icon.png`) wrzuć do `public/b
 - **Kalendarz** (`/admin/calendar`, FullCalendar): pokazuje terminy wizyt (`scheduledAt`) i terminy zakończenia (`dueAt`) zleceń prosto z tabeli `Order` oraz własne wydarzenia (`CalendarEvent`, opcjonalnie powiązane ze zleceniem). Przeciągnięcie terminu zlecenia zmienia datę w zleceniu. Dane: `GET /api/calendar?start&end[&mine=1]`.
 - **Magazyn** (`/admin/inventory`): zakładki „Stan firmy” (ilość, stan minimalny, ceny, wartość magazynu, alert niskiego stanu) i „Sprzęt klienta” (powiązany z klientem i zleceniem). Szybka korekta ilości ±1.
 - **Zamówienia części** (`/admin/part-orders`): statusy Do zamówienia → Zamówione → W drodze → Odebrane / Anulowane, dostawca, link, nr przesyłki, przewidywana dostawa (opóźnione na czerwono). Odebranie części dodaje ją do stanu firmy (powiązaną ze zleceniem).
+
+## Strona publiczna
+
+Podstrony (każda w `/pl`, `/de`, `/en`): `/` start, `/services`, `/about`, `/repair` (formularz zgłoszenia), `/contact`, `/articles` + `/articles/[slug]` (baza wiedzy), `/partners`, `/promotions`.
+
+- **Zgłoszenie naprawy** tworzy zlecenie (źródło „Formularz WWW”, znacznik WWW na liście) i dopasowuje istniejącego klienta po e-mailu lub telefonie albo zakłada nowego. Klient dostaje e-mail z numerem zgłoszenia, firma — powiadomienie na adres z ustawień. Kod rabatowy jest sprawdzany (aktywny, w terminie, limit użyć) i zliczany.
+- **Kontakt**: wiadomości trafiają do panelu (`/admin/messages`, licznik nieobsłużonych w menu) i na e-mail firmy.
+- Ochrona formularzy: pole-pułapka dla botów + limit 5 zgłoszeń / 10 min z jednego IP.
+- **Artykuły** (Markdown, osobna treść i adres dla każdego języka), **promocje** (kod, % lub kwota, daty, limit użyć, treść w 3 językach — brak tłumaczenia → wersja PL), **partnerzy** (logo, link, kolejność) — zarządzane w panelu admina.
 
 ## Powiadomienia
 

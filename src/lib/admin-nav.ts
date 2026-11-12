@@ -1,5 +1,5 @@
 import {
-  LayoutDashboard, Users, ClipboardList, CalendarDays, Boxes, Truck, BadgePercent, FileText, Settings,
+  LayoutDashboard, Users, ClipboardList, CalendarDays, Boxes, Truck, BadgePercent, FileText, Settings, Handshake, Inbox,
 } from "lucide-react";
 
 /** Moduły panelu admina; `key` = klucz tłumaczenia w Admin.*, `slug` = segment URL. */
@@ -12,5 +12,7 @@ export const adminModules = [
   { key: "partOrders", slug: "part-orders", icon: Truck },
   { key: "promotions", slug: "promotions", icon: BadgePercent },
   { key: "articles", slug: "articles", icon: FileText },
+  { key: "partners", slug: "partners", icon: Handshake },
+  { key: "messages", slug: "messages", icon: Inbox },
   { key: "settings", slug: "settings", icon: Settings },
 ] as const;

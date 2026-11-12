@@ -9,6 +9,7 @@ import { getStaffUsers } from "@/lib/order-queries";
 import { PageHeader } from "@/components/admin/page-header";
 import { PAGE_SIZE, Pagination, parsePage } from "@/components/admin/pagination";
 import { PriorityBadge, StatusBadge } from "@/components/admin/status-badge";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
@@ -132,6 +133,7 @@ export default async function OrdersPage({ params, searchParams }: { params: Pro
                   <TD className="font-mono text-xs"><Link href={`/admin/orders/${o.id}`} className="hover:text-primary">{formatOrderNumber(o.number)}</Link></TD>
                   <TD className="max-w-xs">
                     <Link href={`/admin/orders/${o.id}`} className="font-medium hover:text-primary">{o.title}</Link>
+                    {o.source === "PUBLIC_FORM" && <Badge tone="cyan" className="ml-2 align-middle">WWW</Badge>}
                     {(o.deviceBrand || o.deviceModel) && (
                       <div className="truncate text-xs text-muted-foreground">{[o.deviceBrand, o.deviceModel].filter(Boolean).join(" ")}</div>
                     )}
